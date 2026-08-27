@@ -1,0 +1,52 @@
+{% extends "dojo/base.html" %}
+{% block title %}Nihongo Learning — learn Japanese{% endblock %}
+{% block content %}
+<section class="hero">
+  <p class="hero-eyebrow">A quiet place to practice</p>
+  <h1>始めましょう<br><span style="font-size:0.5em; color:var(--ink-soft);">Let's begin.</span></h1>
+  <p class="lede">Start your Japanese language learning journey from the basics. Learn hiragana, 
+    katakana, and everyday vocabulary step by step.</p>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="{% url 'dojo:hiragana' %}">Start with Hiragana</a>
+    <a class="btn btn-ghost" href="{% url 'dojo:quiz' %}">Jump to Quiz</a>
+  </div>
+</section>
+
+{% if attempts > 0 %}
+<div class="stats-strip">
+  <div class="stat"><span class="num">{{ score }}/{{ attempts }}</span><span class="label">Quiz Score</span></div>
+</div>
+{% endif %}
+
+<div class="section-head">
+  <h2>学習の道</h2>
+  <div class="rule"></div>
+</div>
+
+<div class="card-grid">
+  <a class="path-card" href="{% url 'dojo:hiragana' %}">
+    <span class="glyph">あ</span>
+    <h3>Hiragana</h3>
+    <p>The Basics of Reading Japanese Hiragana.</p>
+    <span class="count">{{ hiragana_count }} characters</span>
+  </a>
+  <a class="path-card" href="{% url 'dojo:katakana' %}">
+    <span class="glyph">ア</span>
+    <h3>Katakana</h3>
+    <p>The Basics of Reading Japanese Katakana.</p>
+    <span class="count">{{ katakana_count }} characters</span>
+  </a>
+  <a class="path-card" href="{% url 'dojo:vocabulary' %}">
+    <span class="glyph">語彙</span>
+    <h3>Vocabulary</h3>
+    <p>Flip flashcards across greetings, food, time, verbs, and more.</p>
+    <span class="count">{{ vocab_count }} words</span>
+  </a>
+  <a class="path-card" href="{% url 'dojo:quiz' %}">
+    <span class="glyph">問題<</span>
+    <h3>Quiz</h3>
+    <p>Mixed multiple-choice drills with a running score.</p>
+    <span class="count">Untimed practice</span>
+  </a>
+</div>
+{% endblock %}

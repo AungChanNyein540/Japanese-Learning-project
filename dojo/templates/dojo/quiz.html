@@ -1,0 +1,54 @@
+{% extends "dojo/base.html" %}
+{% block title %}Quiz — Nihongo learning{% endblock %}
+{% block content %}
+<section class="hero" style="padding-top:48px; padding-bottom:0;">
+  <p class="hero-eyebrow">Practice drill</p>
+  <h1>問題</h1>
+  <p class="lede">Choose the correct reading or meaning. Your score is tracked for this session.</p>
+</section>
+
+<div class="quiz-type-row">
+  <a class="filter-chip {% if question.quiz_type == 'hiragana' %}active{% endif %}" href="{% url 'dojo:quiz' %}?type=hiragana">Hiragana</a>
+  <a class="filter-chip {% if question.quiz_type == 'katakana' %}active{% endif %}" href="{% url 'dojo:quiz' %}?type=katakana">Katakana</a>
+  <a class="filter-chip {% if question.quiz_type == 'vocabulary' %}active{% endif %}" href="{% url 'dojo:quiz' %}?type=vocabulary">Vocabulary</a>
+</div>
+
+<div class="quiz-panel">
+  <p class="quiz-score">Score: <b>{{ score }}</b> / {{ attempts }}</p>
+
+  {% if feedback %}
+  <div class="feedback {% if feedback.is_correct %}correct{% else %}wrong{% endif %}">
+    <div class="hanko-stamp">{% if feedback.is_correct %}正{% else %}否{% endif %}</div>
+    <div>
+      {% if feedback.is_correct %}
+        <strong>Correct.</strong> {{ feedback.question_text }}{% if feedback.question_extra %} ({{ feedback.question_extra }}){% endif %} means/reads <strong>{{ feedback.correct }}</strong>.
+      {% else %}
+        <strong>Not quite.</strong> {{ feedback.question_text }}{% if feedback.question_extra %} ({{ feedback.question_extra }}){% endif %} is <strong>{{ feedback.correct }}</strong>, not "{{ feedback.chosen }}".
+      {% endif %}
+    </div>
+  </div>
+  {% endif %}
+
+  <div class="quiz-question-box">
+    <span class="glyph">{{ question.question_text }}</span>
+  </div>
+  <p class="quiz-extra">{{ question.question_extra }}</p>
+
+  <form method="POST" action="{% url 'dojo:quiz_answer' %}">
+    {% csrf_token %}
+    <div class="choice-list">
+      {% for choice in question.choices %}
+      <button class="choice-btn" type="submit" name="choice" value="{{ choice }}">{{ choice }}</button>
+      {% endfor %}
+    </div>
+  </form>
+
+  <div class="reset-row">
+    <form method="POST" action="{% url 'dojo:quiz_reset' %}">
+      {% csrf_token %}
+      <button type="submit">Reset score</button>
+    </form>
+  </div>
+</div>
+{% endblock %}
+

@@ -1,0 +1,46 @@
+{% extends "dojo/base.html" %}
+{% block title %}{{ title }} — Nihongo Learning{% endblock %}
+{% block content %}
+<section class="hero" style="padding-top:48px; padding-bottom:8px;">
+  <p class="hero-eyebrow">Reference chart</p>
+  <h1>{{ subtitle }}</h1>
+  <p class="lede">{{ description }} Hover a cell to see its romanization.</p>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="{% url 'dojo:quiz' %}?type={{ quiz_type }}">Quiz me on {{ title }}</a>
+  </div>
+</section>
+
+<div class="section-head">
+  <h2>基本 — Base sounds</h2>
+  <div class="rule"></div>
+</div>
+<div class="kana-grid">
+  {% for row in base_grid %}
+    {% for cell in row %}
+      {% if cell %}
+      <div class="kana-cell">
+        <span class="char">{{ cell.char }}</span>
+        <span class="romaji">{{ cell.romaji }}</span>
+      </div>
+      {% else %}
+      <div class="kana-cell empty"></div>
+      {% endif %}
+    {% endfor %}
+  {% endfor %}
+</div>
+
+<div class="section-head">
+  <h2>濁音 — Voiced sounds</h2>
+  <div class="rule"></div>
+</div>
+<div class="kana-grid">
+  {% for row in dakuten_grid %}
+    {% for cell in row %}
+      <div class="kana-cell">
+        <span class="char">{{ cell.char }}</span>
+        <span class="romaji">{{ cell.romaji }}</span>
+      </div>
+    {% endfor %}
+  {% endfor %}
+</div>
+{% endblock %}

@@ -1,0 +1,40 @@
+{% extends "dojo/base.html" %}
+{% block title %}Vocabulary — Nihongo learning{% endblock %}
+{% block content %}
+<section class="hero" style="padding-top:48px; padding-bottom:8px;">
+  <p class="hero-eyebrow">Flashcards</p>
+  <h1>単語</h1>
+  <p class="lede">Click a card to flip it. Filter by category to focus your review.</p>
+  <div class="hero-actions">
+    <a class="btn btn-primary" href="{% url 'dojo:quiz' %}?type=vocabulary">Quiz me on Vocabulary</a>
+  </div>
+</section>
+
+<div class="filter-row">
+  {% for cat in categories %}
+  <a class="filter-chip {% if cat == active_category %}active{% endif %}"
+     href="{% url 'dojo:vocabulary' %}?category={{ cat }}">{{ cat }}</a>
+  {% endfor %}
+</div>
+
+<div class="flash-grid">
+  {% for w in words %}
+  <label class="flashcard">
+    <input type="checkbox" aria-label="Flip card for {{ w.meaning }}">
+    <div class="flashcard-inner">
+      <div class="flash-face front">
+        <span class="category-tag">{{ w.category }}</span>
+        <span class="kanji">{{ w.kanji }}</span>
+        <span class="flash-hint">tap to flip</span>
+      </div>
+      <div class="flash-face back">
+        <span class="reading">{{ w.reading }}</span>
+        <span class="meaning">{{ w.meaning }}</span>
+        <span class="flash-hint">{{ w.romaji }}</span>
+      </div>
+    </div>
+  </label>
+  {% endfor %}
+</div>
+{% endblock %}
+
